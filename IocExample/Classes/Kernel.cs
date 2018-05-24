@@ -8,18 +8,19 @@ namespace IocExample
 {
     class Kernel
     {
-        Dictionary<Type, Type> dictType = new Dictionary<Type, Type>();
+        Dictionary<Type, Type> typeDict = new Dictionary<Type, Type>();
 
-        Dictionary<Type, Object> dictTypeObj = new Dictionary<Type, Object>();
+        Dictionary<Type, Object> typeObjectDict = new Dictionary<Type, Object>();
+
         public void Bind(Type bind, Type to)
         {
-            dictType.Add(bind, to);
+            typeDict.Add(bind, to);
 
         }
 
         public void BindToObject(Type bind, Object obj )
         {
-            dictTypeObj.Add(bind, obj);
+            typeObjectDict.Add(bind, obj);
 
         }
 
@@ -27,25 +28,24 @@ namespace IocExample
         {
             return (T)Get(typeof(T));
 
-
         }
 
         private object Get(Type getType)
         {
-            if (dictTypeObj.ContainsKey(getType))
+            if (typeObjectDict.ContainsKey(getType))
             {
-                return dictTypeObj[getType];
+                return typeObjectDict[getType];
             }
             else
             {
-                getType = dictType[getType];
+                getType = typeDict[getType];
 
                 var constrInfo = Utils.GetSingleConstructor(getType);
                 List<Object> parameters = new List<object>();
-                foreach (var parameter in constrInfo.GetParameters())
-                {
+
+                constrInfo.GetParameters().ToList().ForEach(parameter => {
                     parameters.Add(Get(parameter.ParameterType));
-                }
+                });
 
                 return Utils.CreateInstance(getType, parameters);
 

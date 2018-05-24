@@ -5,6 +5,7 @@ namespace IocExample
 {
     class Program
     {
+        //initial code
         //static void Main(string[] args)
         //{
         //    var logger = new ConsoleLogger();
@@ -14,7 +15,7 @@ namespace IocExample
         //    createUserHandler.Handle();
         //}
 
-        //1
+        //#1
         //static void Main(string[] args)
         //{
         //    IKernel kernel = new StandardKernel();
@@ -38,7 +39,7 @@ namespace IocExample
 
         //}
 
-        //2
+        //#2
         static void Main(string[] args)
         {
 
@@ -56,8 +57,6 @@ namespace IocExample
             kernel.BindToObject(typeof(RestClient), new RestClient("API_KEY"));
 
             var createUserHandler = kernel.Get<CreateUserHandler>();
-
-
 
             createUserHandler.Handle();
             Console.ReadKey();
